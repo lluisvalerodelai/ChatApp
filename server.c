@@ -59,15 +59,19 @@ int main() {
 
   char dataBuffer[1024];
 
-  int recvResult = recv(clientFD, &dataBuffer, sizeof(dataBuffer), 0);
+  while (1) {
 
-  if (recvResult > 0) {
-    printf("succesfully recieved %i bytes of data\n\t%s", recvResult,
-           dataBuffer);
-  } else {
-    printf("ERROR in recieving data\nError: %s\n", strerror(errno));
-    close(serverFD);
-    return 1;
+    printf("recieving... \n");
+    int recvResult = recv(clientFD, &dataBuffer, sizeof(dataBuffer), 0);
+
+    if (recvResult > 0) {
+      printf("succesfully recieved %i bytes of data\n\t%s", recvResult,
+             dataBuffer);
+    } else {
+      printf("ERROR in recieving data\nError: %s\n", strerror(errno));
+      close(serverFD);
+      // return 1;
+    }
   }
 
   return 0;
