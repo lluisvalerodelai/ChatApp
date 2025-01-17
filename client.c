@@ -41,7 +41,6 @@ int main() {
   char *messageBuf = "Hello, other machine!";
   int sendResult = send(socketFD, messageBuf, strlen(messageBuf), 0);
 
-
   if (sendResult > 0) {
     printf("Succesfully sent %i bytes, message: %s \n", sendResult, messageBuf);
   } else {
