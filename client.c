@@ -32,13 +32,13 @@ int main() {
     printf("Succesfully connected to server! \nIP: %s, Port: %i\n", IpAddr,
            portNum);
   } else {
-    printf("Error connecting to %s:%i \n Error: %s", IpAddr, portNum,
+    printf("Error connecting to %s:%i \n Error: %s \n", IpAddr, portNum,
            strerror(errno));
     close(socketFD);
     return 1;
   }
 
-  char *messageBuf = "Hello, other machine!";
+  char *messageBuf = "GET /index.html";
   int sendResult = send(socketFD, messageBuf, strlen(messageBuf), 0);
 
   if (sendResult > 0) {
@@ -49,19 +49,20 @@ int main() {
     return 1;
   }
 
-  printf("calling recv\n");
+  printf("waiting for server response...\n");
+  char resultBuf[1024];
+  int recieveResult = recv(socketFD, &resultBuf, sizeof(resultBuf), 0);
 
-  char recieveBuffer[1024];
-  int recvResult = recv(socketFD, recieveBuffer, sizeof(recieveBuffer), 0);
-
-  if (recvResult > 0) {
-    printf("recieved %i bytes\nmessage: \n%s \n", recvResult, recieveBuffer);
+  if (recieveResult < 0) {
+    printf("Error: %s\n", strerror(errno));
+  } else if (recieveResult == 0) {
+    printf("Server Disconnected\n");
   } else {
-    printf("Error: %s", strerror(errno));
-    close(socketFD);
-    return 1;
+
+    printf("Server Response: %s \n", resultBuf);
   }
 
+  printf("closing connection \n");
   close(socketFD);
 
   return 0;
