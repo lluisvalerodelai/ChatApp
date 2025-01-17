@@ -70,7 +70,7 @@ int main() {
     } else {
       printf("ERROR in recieving data\nError: %s\n", strerror(errno));
       close(serverFD);
-      // return 1;
+      break;
     }
   }
 
