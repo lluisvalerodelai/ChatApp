@@ -1,31 +1,16 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"net"
-	"os"
 )
 
 func main() {
-	var ipS string = "10.146.202.50"
+	var ipS string = "127.0.0.1"
 	var portS string = "42069"
 
-	// fmt.Print("Please give server IP: ")
-	// _, err := fmt.Scan(&ipS)
-	//
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	//
-	// fmt.Print("Please give server port: ")
-	// _, err = fmt.Scan(&portS)
-	//
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
+	// fmt.Print("Please giv
 	//now we have port & ip, we can connect via TCP to server and leave the connection open
 
 	conn, err := net.Dial("tcp", ipS+":"+portS)
@@ -61,20 +46,13 @@ func main() {
 func sendMessage(conn net.Conn) {
 	//promt user for message
 	var message string
-  scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("Please write your message: ")
+  _, err := fmt.Scan(&message)
 
-  //loop for each line the user puts and add it to message 
-  for scanner.Scan() {
-    scanned := scanner.Text() 
-    if scanned == "" {
-      break
-    }
-    message += scanned + "\n"
+  if (err != nil) {
+    log.Fatal(err)
   }
-
-  //10.146.202.50
 
 	//send the message
 	n, err := conn.Write([]byte(message))
